@@ -11,7 +11,7 @@ run:
 .PHONY: test
 test:
 	docker-compose up --build tester
-	# docker-compose down
+	docker-compose down
 
 # Stop and remove all Docker containers
 .PHONY: clean

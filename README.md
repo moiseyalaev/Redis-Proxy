@@ -32,10 +32,13 @@ https://docs.python.org/3.11/
 https://docs.python.org/3/library/collections.html#collections.OrderedDict
 https://docs.python.org/3/library/unittest.html
 https://docs.python.org/3/library/logging.html
+https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
+https://docs.python.org/3/library/threading.html#semaphore-objects
 
 
 StackOverflow:
 https://stackoverflow.com/questions/19021765/redis-py-whats-the-difference-between-strictredis-and-redis
+https://stackoverflow.com/questions/22885775/what-is-the-difference-between-lock-and-rlock
 
 
 Request module:

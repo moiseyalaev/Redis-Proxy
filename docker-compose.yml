@@ -10,6 +10,7 @@ services:
       - REDIS_PORT=6379
       - CACHE_EXPIRY_TIME=300
       - CACHE_CAPACITY=1000
+      - MAX_CLIENTS=20
     ports:
       - "8000:8000"
   redis:
