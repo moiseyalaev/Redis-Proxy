@@ -15,7 +15,7 @@ class Cache:
         if key in self.local_cache:
             item, timestamp = self.local_cache.pop(key)
 
-            if datetime.now() - timestamp < self.expiry_time:
+            if datetime.now() - timestamp < timedelta(seconds = self.expiry_time):
                 # Push item to the front to show that it was most recently used
                 self.local_cache[key] = (item, timestamp)
                 return item
@@ -32,4 +32,4 @@ class Cache:
     def _ensure_cache_size(self):
         # Evict least recently used items if the cache is over capacity
         while len(self.local_cache) > self.capacity:
-            self.local_cache.popitem(last=False)  # LRU item is at the beginning
+            self.local_cache.popitem(last = False)

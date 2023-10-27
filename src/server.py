@@ -23,4 +23,8 @@ def get(key):
     return ('', 204)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(
+        host=environ.get('PROXY_HOST', '0.0.0.0'),
+        port=int(environ.get('PROXY_PORT', 8000))
+    )
+    

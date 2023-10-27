@@ -24,3 +24,19 @@ Conclusion: I choose to go the route of implimenting my own Ordered Dicitonary s
 ## If node expired
 
 we pop the key, val pair from the dictionary and then we 
+
+## Sources
+General Docs:
+https://redis.io/commands
+https://docs.python.org/3.11/
+https://docs.python.org/3/library/collections.html#collections.OrderedDict
+https://docs.python.org/3/library/unittest.html
+https://docs.python.org/3/library/logging.html
+
+
+StackOverflow:
+https://stackoverflow.com/questions/19021765/redis-py-whats-the-difference-between-strictredis-and-redis
+
+
+Request module:
+https://pypi.org/project/requests/
