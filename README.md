@@ -48,7 +48,7 @@ After a bit of deliberation, three general paths emerged for implementing the lo
    Utilizing Python's `collections.OrderedDict` provides a middle ground. The OrderedDict maintains the order of keys based on when they were last accessed, which simplifies the implementation of LRU eviction. For global expiry, timestamps would be stored alongside the values, and a routine would check these timestamps whenever a key is accessed to see if the value has expired. This approach is straightforward, doesn't introduce additional dependencies, and requires less manual management compared to the first approach.
 
 3. **Third-Party Dependencies: `redis_cache.RedisCache` and `functools.lru_cache`**:
-   Leveraging third-party libraries can significantly simplify the implementation of the caching layer. These libraries abstract away the lower-level details and provide a higher-level, more convenient interface to work with caching. With that said, the major cons lie in needing to manage the dependency versioning and any bugs it may present. In addition, control and customization to specific needs are sacrificed for ease of use.
+   Leveraging third-party libraries can significantly simplify the implementation of the caching layer. These libraries abstract away the lower-level details and provide a higher-level, more convenient interface to work with caching. With that said the major cons lie in needing to manage the dependency versioning and any bugs it may present. In addition, control and customization to specific needs are sacrificed for ease of use.
 
 **Conclusion**: I chose to go the route of implementing my own OrderedDict since it allowed me to have a suitable level of control for future iterations of the project without requiring most of my development efforts to go towards managing the local cache class.
 
@@ -64,9 +64,9 @@ Here's how the local cache operates:
    - A lock object `self.lock` is also instantiated to ensure
 
 2. **Cache Retrieval**:
-   - The `get` method is utilized for cache retrieval. It employs a lock to ensure each thread is not interacting with eachother's cache during the process.
+   - The `get` method is utilized for cache retrieval. It employs a lock to ensure each thread is not interacting with each other's cache during the process.
    - Upon a cache retrieval request, it first checks if the key exists in the local cache and if the data has not expired. If both conditions are true, the data is returned to the client.
-   - The method uses `self.local_cache.pop(key)` to remove the item and re-inserts it to update its position in the order, reflecting its recent usage.
+   - The method uses `self.local_cache.pop(key)` to remove the item and re-insert it to update its position in the order, reflecting its recent usage.
 
 3. **Cache Update**:
    - If the item is not found in the local cache or is expired, the method checks the backing Redis instance.
@@ -79,10 +79,10 @@ Here's how the local cache operates:
 ## Algorithmic Complexity of Cache Operations
 
 ### 1. Inserting an Item - `O(1)`:
-- Utilizing `OrderedDict`, which is simply a Dictoinary with a doubly linked list, inserting an item into the cache is a constant time complexity operation.
+- Utilizing `OrderedDict`, which is simply a Dictionary with a doubly linked list, inserting an item into the cache is a constant time complexity operation.
 
 ### 2. Retrieving an Item - `O(1)`:
-- Retrieving an item, due to hashing, is also a constant time operation. In the extremly rare case of a hash collision, complexity could be reduced to `O(n)`.
+- Retrieving an item, due to hashing, is also a constant time operation. In the extremely rare case of a hash collision, complexity could be reduced to `O(n)`.
 
 ### 3. Evicting an Item - `O(1)`:
 - Evicting the least recently used item is achieved using `popitem(last = False)` method of `OrderedDict`, ensuring a constant time operation.
@@ -102,14 +102,14 @@ The design ensures efficient cache operations while achieving thread safety and 
 
 ### Running the Proxy
 1. Clone the repository to your local machine or `run tar -xzvf assignment.tar.gz`.
-2. Navigate to the project directory: `tar -xzvf assignment.tar.gz`.
+2. Navigate to the project directory: `cd assignment`.
 3. To start the proxy, run the following command in your terminal:
    ```bash
    make run
 
 ### Running Tests
 1. Make sure you completed the previous two steps in the 'Running the Proxy' section.
-2. To exectute the tests run the following in the project directory:
+2. To execute the tests run the following in the project directory:
    ```bash
    make test
 
@@ -119,15 +119,15 @@ Modify the following environment variables within the `docker-compose.yml` file:
 - `PROXY_PORT`: The port the proxy listens on (default: 8000).
 - `REDIS_HOST`: The host IP address for the Redis instance (default: 'localhost').
 - `REDIS_PORT`: The port the Redis instance listens on (default: 6379).
-- `CACHE_EXPIRY_TIME`: The cache expiry time in seconds (default: 300).
+- `CACHE_EXPIRY_TIME`: The cache expiry time is in seconds (default: 300).
 - `CACHE_CAPACITY`: The maximum number of keys the cache can hold (default: 1000).
 - `MAX_CLIENTS`: The maximum number of concurrent clients the proxy can serve (default: 20).
 
 ## Requirements Not Implemented
-The only requirement that I did not fulfill is the bonus requirement of 'Redis client protocol'. The reason was mostly due to the added complexity and reconfiguration of my application that would need to be involved. As I researched the work that would be involved, I realized that it requires a deep understanding of the protocol itself, which could be complex and time-consuming to learn. Lastly, I don't think the added value of having this feature was worth the time and effort involved in implementing it, a trade-off I weighed carefully in order to spend more time having a clean and useful README instead.
+The only requirement that I did not fulfill is the bonus requirement of the 'Redis client protocol'. The reason was mostly due to the added complexity and reconfiguration of my application that would need to be involved. As I researched the work that would be involved, I realized that it requires a deep understanding of the protocol itself, which could be complex and time-consuming to learn. Lastly, I don't think the added value of having this feature was worth the time and effort involved in implementing it, a trade-off I weighed carefully in order to spend more time having a clean and useful README instead.
 
 ## Time per Section
-Some of the major bottlenecks in my time efficiency were having to configure a Container from scratch, research Flask and Redis, writing robust tests, and keeping a comprehensive README.
+Some of the major bottlenecks in my time efficiency were having to configure a Container from scratch, research Flask and Redis, write robust tests, and keep a comprehensive README.
 - HTTP web service: 30 mins
 - Single backing Redis: 30 mins
 - Cached Get: 40 mins
