@@ -5,7 +5,6 @@ import redis
 import time
 import logging 
 from concurrent.futures import ThreadPoolExecutor
-
 class TestIntegration(unittest.TestCase):
     # Initalize logging
     logging.basicConfig(level = logging.WARNING)
@@ -13,7 +12,7 @@ class TestIntegration(unittest.TestCase):
 
     BASE_URL = f"http://{os.environ.get('PROXY_HOST', 'localhost')}:{os.environ.get('PROXY_PORT', '8000')}"
 
-    def setUp(self): # or __init__?
+    def setUp(self):
         redis_host = os.environ.get('REDIS_HOST', 'localhost')
         redis_port = int(os.environ.get('REDIS_PORT', 6379))
         self.redis_client = redis.Redis(host = redis_host, port = redis_port, db = 0)
@@ -45,7 +44,6 @@ class TestIntegration(unittest.TestCase):
         response = requests.get(f'{self.BASE_URL}/{key}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['value'], value)
-
 
     def test_global_expiry(self):
         key, value = 'expiring_key', 'expiring_value'
@@ -95,7 +93,7 @@ class TestIntegration(unittest.TestCase):
                 future = executor.submit(requests.get, f'{self.BASE_URL}/key{i}')
                 futures.append(future)
 
-            # Wait for all futures to complete
+            # Wait for all futures to complete and expect all return a 200
             for future in futures:
                 result = future.result()
                 self.assertEqual(result.status_code, 200)
@@ -116,6 +114,3 @@ class TestIntegration(unittest.TestCase):
                 # Eventually we expect a 429
                 if response.status_code != 200:
                     self.assertEqual(response.status_code, 429)
-
-
-
